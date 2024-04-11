@@ -35,7 +35,7 @@ ExternalProject_Add(gcc_no_newlib
   "--disable-libatomic"
   "--with-cpu=5208"
   "--with-newlib"
-  BUILD_COMMAND  "make" "-j"
+  BUILD_COMMAND  "make" "MAKEFLAGS=-j9"
   INSTALL_COMMAND "make" "install"
   DEPENDS binutils
 )
@@ -85,7 +85,7 @@ ExternalProject_Add(g++_full
   "--disable-libatomic"
   "--with-cpu=5208"
   "--with-newlib"
-  BUILD_COMMAND  "make" "-j"
+  BUILD_COMMAND  "make" "MAKEFLAGS=-j9"
   INSTALL_COMMAND "make" "install"
   DEPENDS newlib
 )
