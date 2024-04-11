@@ -41,7 +41,8 @@ ExternalProject_Add(gcc_no_newlib
 )
 
 ExternalProject_Add(newlib
-  URL  ftp://sourceware.org/pub/newlib/newlib-4.3.0.20230120.tar.gz
+  URL  https://sourceware.org/pub/newlib/newlib-4.3.0.20230120.tar.gz
+  # URL  https://sourceware.org/pub/newlib/newlib-4.4.0.20231231.tar.gz
   CONFIGURE_COMMAND
   ${CMAKE_COMMAND} -E env "PATH=${PREFIX}/bin:$ENV{PATH}"
   "../newlib/configure"
