@@ -103,6 +103,7 @@ ExternalProject_Add(qemu
 ExternalProject_Add(hello_world
   SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/hello_world
   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_CURRENT_LIST_DIR}/hello_world/m5208evb_semihosted.cmake
+  CMAKE_GENERATOR "Ninja"
   BUILD_COMMAND  "ninja"
   INSTALL_COMMAND ""
   DEPENDS g++_full
