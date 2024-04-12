@@ -8,13 +8,15 @@ set(PREFIX /opt/m68k-elf)
 set(PREFIX_QEMU /opt/m68k-qemu)
 set(TARGET m68k-elf)
 
-include(ExternalProject)
+cmake_host_system_information(RESULT NPROC QUERY NUMBER_OF_LOGICAL_CORES)
+math(EXPR JOBS "${NPROC} + 2")
 
+include(ExternalProject)
 
 ExternalProject_Add(binutils
   URL  https://ftp.gnu.org/gnu/binutils/binutils-2.41.tar.xz
   CONFIGURE_COMMAND "../binutils/configure" "--prefix=${PREFIX}" "--target=${TARGET}"
-  BUILD_COMMAND  "make" "-j"
+  BUILD_COMMAND  "make" "-j${JOBS}"
   INSTALL_COMMAND "make" "install"
 )
 
@@ -34,8 +36,9 @@ ExternalProject_Add(gcc_no_newlib
   "--disable-libquadmath"
   "--disable-libatomic"
   "--with-cpu=5208"
+  "--with-arch=cf"
   "--with-newlib"
-  BUILD_COMMAND  "make" "MAKEFLAGS=-j9"
+  BUILD_COMMAND  "make" "-j${JOBS}"
   INSTALL_COMMAND "make" "install"
   DEPENDS binutils
 )
@@ -60,7 +63,7 @@ ExternalProject_Add(newlib
   #"--enable-fast-install"
   BUILD_COMMAND
   ${CMAKE_COMMAND} -E env "PATH=${PREFIX}/bin:$ENV{PATH}"
-  "make" "-j"
+  "make" "-j${JOBS}"
   INSTALL_COMMAND
   ${CMAKE_COMMAND} -E env "PATH=${PREFIX}/bin:$ENV{PATH}"
   "make" "install"
@@ -84,8 +87,9 @@ ExternalProject_Add(g++_full
   "--disable-libquadmath"
   "--disable-libatomic"
   "--with-cpu=5208"
+  "--with-arch=cf"
   "--with-newlib"
-  BUILD_COMMAND  "make" "MAKEFLAGS=-j9"
+  BUILD_COMMAND  "make" "-j${JOBS}"
   INSTALL_COMMAND "make" "install"
   DEPENDS newlib
 )
@@ -96,7 +100,7 @@ ExternalProject_Add(qemu
   CONFIGURE_COMMAND "../qemu/configure"
   "--prefix=${PREFIX_QEMU}"
   "--target-list=m68k-softmmu"
-  BUILD_COMMAND  "make" "-j"
+  BUILD_COMMAND  "make" "-j${JOBS}"
   INSTALL_COMMAND "make" "install"
 )
 
